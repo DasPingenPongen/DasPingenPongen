@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         int score = getRightScore() + 1
         setRightScore(score)
         if (isGameEnd()) {
-            displayGameOver(getString(R.string.left_user_name))
+            displayGameOver(getString(R.string.right_user_name))
         }
     }
 
