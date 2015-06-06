@@ -21,7 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameOverActivity"/>
+        <activity android:name=".GameOverActivity"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

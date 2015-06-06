@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.TextView
 import groovy.transform.CompileStatic
 import io.relayr.RelayrSdk
-import io.relayr.model.Transmitter
 import io.relayr.model.TransmitterDevice
 import io.relayr.model.User
 import rx.Observable
@@ -25,8 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        changeBallSide()
     }
 
     @Override
@@ -74,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
     void changeBallSide() {
         boolean shouldLeftServe = gameEndChecker.shouldLeftServe(getLeftScore(), getRightScore())
-        findViewById(R.id.left_ball).visibility = shouldLeftServe ? View.VISIBLE : View.GONE
-        findViewById(R.id.right_ball).visibility = shouldLeftServe ? View.GONE : View.VISIBLE
+        findViewById(R.id.left_ball).visibility = shouldLeftServe ? View.VISIBLE : View.INVISIBLE
+        findViewById(R.id.right_ball).visibility = shouldLeftServe ? View.INVISIBLE : View.VISIBLE
     }
 
     boolean isGameEnd() {
