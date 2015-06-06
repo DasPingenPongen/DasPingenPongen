@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import groovy.transform.CompileStatic
 import io.relayr.RelayrSdk
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private void onLeftAddPoint() {
         int score = getLeftScore() + 1
         setLeftScore(score)
+        changeBallSide()
         if (isGameEnd()) {
             displayGameOver(getString(R.string.left_user_name))
         }
@@ -64,9 +66,16 @@ public class MainActivity extends AppCompatActivity {
     private void onRightAddPoint() {
         int score = getRightScore() + 1
         setRightScore(score)
+        changeBallSide()
         if (isGameEnd()) {
             displayGameOver(getString(R.string.right_user_name))
         }
+    }
+
+    void changeBallSide() {
+        boolean shouldLeftServe = gameEndChecker.shouldLeftServe(getLeftScore(), getRightScore())
+        findViewById(R.id.left_ball).visibility = shouldLeftServe ? View.VISIBLE : View.GONE
+        findViewById(R.id.right_ball).visibility = shouldLeftServe ? View.GONE : View.VISIBLE
     }
 
     boolean isGameEnd() {

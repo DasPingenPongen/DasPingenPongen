@@ -82,6 +82,7 @@
 
                 <ImageView
                     android:id="@+id/right_ball"
+                    android:visibility="invisible"
                     android:layout_gravity="end"
                     android:layout_margin="@dimen/large_margin"
                     android:layout_width="@dimen/the_ball_size"
