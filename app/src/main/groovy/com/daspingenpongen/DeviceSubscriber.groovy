@@ -22,8 +22,7 @@ final class DeviceSubscriber {
         subscription = transmitterDevice.subscribeToCloudReadings()
                 .filter(this.&filterProximityOnly)
                 .map(this.&mapToStatus)
-                .buffer(2)
-                .filter(this.&changeToTrue)
+                .distinctUntilChanged()
                 .subscribe(this.&onTouch, this.&onError)
     }
 
@@ -37,14 +36,11 @@ final class DeviceSubscriber {
         return Double.parseDouble(reading.value.toString()) > 1000d
     }
 
-    boolean changeToTrue(List<Boolean> status) {
-        Log.e('Status', (status[0] ? '111111111111111111':'00000000000000000')+ (status[1] ? '111111111111111111':'00000000000000000'))
-        return !status[0] && status[1]
-    }
-
-    void onTouch(List<Boolean> aBoolean) {
-        Log.e('Point', 'this event should add one point!')
-        onAddPointListener?.onAddPoint()
+    void onTouch(Boolean aBoolean) {
+        if(aBoolean){
+            Log.e('Point', 'this event should add one point!')
+            onAddPointListener?.onAddPoint()
+        }
     }
 
     private void onError(Throwable throwable) {
