@@ -1,14 +1,20 @@
-package com.daspingenpongen;
+package com.daspingenpongen
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem
-import groovy.transform.CompileStatic;
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import groovy.transform.CompileStatic
+import io.relayr.RelayrSdk
+import io.relayr.model.Transmitter
+import io.relayr.model.User
+import rx.Observable
+import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
 
 @CompileStatic
 public class MainActivity extends AppCompatActivity {
+
+    Subscription subscription
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,24 +23,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    protected void onResume() {
+        super.onResume()
+        subscribeOnLogin(RelayrSdk.isUserLoggedIn() ? RelayrSdk.relayrApi.userInfo : RelayrSdk.logIn(this))
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    protected void onPause() {
+        super.onPause()
+        subscription?.unsubscribe()
+        RelayrSdk.logOut()
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+    private void subscribeOnLogin(Observable<User> logInObservable) {
+        subscription = logInObservable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this.&onLoggedIn, this.&onLoggedInError)
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void onLoggedIn(User user) {
+        user.transmitters
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this.&onTransmitters)
+    }
+
+    private void onTransmitters(List<Transmitter> transmitters) {
+        Log.e('Login error', transmitters.toString())
+    }
+
+    private void onLoggedInError(Throwable throwable) {
+        Log.e('Login error', throwable.message, throwable)
     }
 }

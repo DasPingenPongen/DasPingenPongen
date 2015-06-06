@@ -6,9 +6,11 @@ import io.relayr.RelayrSdk
 
 @CompileStatic
 final class MyFirstApp extends Application {
+
     @Override
     void onCreate() {
         super.onCreate()
         new RelayrSdk.Builder(this).inMockMode(false).build()
     }
+
 }
