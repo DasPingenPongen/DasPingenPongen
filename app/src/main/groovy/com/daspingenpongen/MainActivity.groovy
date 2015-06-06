@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     Subscription subscription
     DeviceSubscriber leftDeviceSubscriber
     DeviceSubscriber rightDeviceSubscriber
+    private final GameEndChecker gameEndChecker = new GameEndChecker()
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,33 +54,51 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onLeftAddPoint() {
-        TextView left = (TextView) findViewById(R.id.left_score)
-        Integer score = Integer.parseInt(left.text.toString())
-
-        updateScore(left,score)
-
-        if(score == 11)
+        int score = getLeftScore() + 1
+        setLeftScore(score)
+        if (isGameEnd()) {
             displayGameOver(getString(R.string.left_user_name))
+        }
     }
 
     private void onRightAddPoint() {
-        TextView right = (TextView) findViewById(R.id.right_score)
-        Integer score = Integer.parseInt(right.text.toString())
-
-        updateScore(right,score)
-
-        if(score == 11)
-            displayGameOver(getString(R.string.right_user_name))
+        int score = getRightScore() + 1
+        setRightScore(score)
+        if (isGameEnd()) {
+            displayGameOver(getString(R.string.left_user_name))
+        }
     }
 
-    void updateScore(TextView textView, int score) {
-        textView.text = ( score + 1).toString()
+    boolean isGameEnd() {
+        int leftScore = getLeftScore()
+        int rightScore = getRightScore()
+        return gameEndChecker.isGameEnd(leftScore, rightScore)
     }
 
     void displayGameOver(String playerName) {
-        Intent intent = new Intent(this,GameOverActivity)
-        intent.putExtra('PLAYER_NAME',playerName)
+        Intent intent = new Intent(this, GameOverActivity)
+        intent.putExtra('PLAYER_NAME', playerName)
         startActivity(intent)
+    }
+
+    void setLeftScore(int score) {
+        TextView left = (TextView) findViewById(R.id.left_score)
+        left.text = score.toString()
+    }
+
+    int getLeftScore() {
+        TextView left = (TextView) findViewById(R.id.left_score)
+        return Integer.parseInt(left.text.toString())
+    }
+
+    void setRightScore(int score) {
+        TextView right = (TextView) findViewById(R.id.right_score)
+        right.text = score.toString()
+    }
+
+    int getRightScore() {
+        TextView right = (TextView) findViewById(R.id.right_score)
+        return Integer.parseInt(right.text.toString())
     }
 
     private void onLoggedInError(Throwable throwable) {
