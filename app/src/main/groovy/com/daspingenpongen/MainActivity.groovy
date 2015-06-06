@@ -7,6 +7,7 @@ import android.widget.TextView
 import groovy.transform.CompileStatic
 import io.relayr.RelayrSdk
 import io.relayr.model.Transmitter
+import io.relayr.model.TransmitterDevice
 import io.relayr.model.User
 import rx.Observable
 import rx.Subscription
@@ -16,8 +17,8 @@ import rx.android.schedulers.AndroidSchedulers
 public class MainActivity extends AppCompatActivity {
 
     Subscription subscription
-    TransmitterSubscriber leftTransmitterSubscriber
-    TransmitterSubscriber rightTransmitterSubscriber
+    DeviceSubscriber leftDeviceSubscriber
+    DeviceSubscriber rightDeviceSubscriber
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +36,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause()
         subscription?.unsubscribe()
-        leftTransmitterSubscriber?.unSubscribe()
-        rightTransmitterSubscriber?.unSubscribe()
-//        RelayrSdk.logOut()
+        leftDeviceSubscriber?.unsubscribe()
+        rightDeviceSubscriber?.unsubscribe()
     }
 
     private void subscribeOnLogin(Observable<User> logInObservable) {
@@ -47,23 +47,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onLoggedIn(User user) {
-        subscription = user.transmitters
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this.&onTransmitters)
-    }
-
-    private void onTransmitters(List<Transmitter> transmitters) {
-        Log.e('on transmitters', transmitters.toString())
-        transmitters.each {
-            Log.e('Transmitter id:', it.id)
-            if (it.id == '6a4c5117-7f8a-41ed-a170-1cf90a9eb73e') {
-                leftTransmitterSubscriber = new TransmitterSubscriber(it)
-                leftTransmitterSubscriber.subscribe(this.&onLeftAddPoint)
-            } else {//d30cc9c2-290b-4fdd-af6f-23eaf2ba0550
-                rightTransmitterSubscriber = new TransmitterSubscriber(it)
-                rightTransmitterSubscriber.subscribe(this.&onRightAddPoint)
-            }
-        }
+        new DeviceSubscriber(new TransmitterDevice('dd66be35-d8fe-441f-be2a-5017cf30f5d8', 'cI_xGtONFU0.sWClApAFfQdxPLWatH02', '', '', '')).subscribe(this.&onLeftAddPoint)
+        new DeviceSubscriber(new TransmitterDevice('31f3e93f-642b-43d9-9432-1f67c3b310de', 'cI_xGtONFU0.sWClApAFfQdxPLWatH02', '', '', '')).subscribe(this.&onLeftAddPoint)
     }
 
     private void onLeftAddPoint() {

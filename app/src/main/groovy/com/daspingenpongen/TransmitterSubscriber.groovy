@@ -6,6 +6,7 @@ import io.relayr.model.Transmitter
 import io.relayr.model.TransmitterDevice
 
 @CompileStatic
+@Deprecated
 final class TransmitterSubscriber {
 
     private Transmitter transmitter
