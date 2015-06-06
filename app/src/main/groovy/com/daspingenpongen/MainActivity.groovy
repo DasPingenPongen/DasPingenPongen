@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     Subscription subscription
     TransmitterSubscriber leftTransmitterSubscriber
+    TransmitterSubscriber rightTransmitterSubscriber
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause()
         subscription?.unsubscribe()
         leftTransmitterSubscriber?.unSubscribe()
+        rightTransmitterSubscriber?.unSubscribe()
 //        RelayrSdk.logOut()
     }
 
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onLoggedIn(User user) {
-        user.transmitters
+        subscription = user.transmitters
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this.&onTransmitters)
     }
@@ -54,13 +56,23 @@ public class MainActivity extends AppCompatActivity {
         Log.e('on transmitters', transmitters.toString())
         transmitters.each {
             Log.e('Transmitter id:', it.id)
-            leftTransmitterSubscriber = new TransmitterSubscriber(it)
-            leftTransmitterSubscriber.subscribe(this.&onLeftAddPoint)
+            if (it.id == '6a4c5117-7f8a-41ed-a170-1cf90a9eb73e') {
+                leftTransmitterSubscriber = new TransmitterSubscriber(it)
+                leftTransmitterSubscriber.subscribe(this.&onLeftAddPoint)
+            } else {//d30cc9c2-290b-4fdd-af6f-23eaf2ba0550
+                rightTransmitterSubscriber = new TransmitterSubscriber(it)
+                rightTransmitterSubscriber.subscribe(this.&onRightAddPoint)
+            }
         }
     }
 
     private void onLeftAddPoint() {
         TextView leftScore = (TextView) findViewById(R.id.left_score)
+        leftScore.text = (Integer.parseInt(leftScore.text.toString()) + 1).toString()
+    }
+
+    private void onRightAddPoint() {
+        TextView leftScore = (TextView) findViewById(R.id.right_score)
         leftScore.text = (Integer.parseInt(leftScore.text.toString()) + 1).toString()
     }
 
