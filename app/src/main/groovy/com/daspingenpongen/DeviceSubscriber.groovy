@@ -45,6 +45,8 @@ final class DeviceSubscriber {
 
     private void onError(Throwable throwable) {
         Log.e('I dont know what to do with this error', throwable.message, throwable)
+        unsubscribe()
+        subscribe(onAddPointListener)
     }
 
     void unsubscribe() {
