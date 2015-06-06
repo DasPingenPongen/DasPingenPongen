@@ -1,5 +1,6 @@
 package com.daspingenpongen
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -52,13 +53,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onLeftAddPoint() {
-        TextView leftScore = (TextView) findViewById(R.id.left_score)
-        leftScore.text = (Integer.parseInt(leftScore.text.toString()) + 1).toString()
+        TextView left = (TextView) findViewById(R.id.left_score)
+        Integer score = Integer.parseInt(left.text.toString())
+
+        updateScore(left,score)
+
+        if(score == 11)
+            displayGameOver(getString(R.string.left_user_name))
     }
 
     private void onRightAddPoint() {
-        TextView leftScore = (TextView) findViewById(R.id.right_score)
-        leftScore.text = (Integer.parseInt(leftScore.text.toString()) + 1).toString()
+        TextView right = (TextView) findViewById(R.id.right_score)
+        Integer score = Integer.parseInt(right.text.toString())
+
+        updateScore(right,score)
+
+        if(score == 11)
+            displayGameOver(getString(R.string.right_user_name))
+    }
+
+    void updateScore(TextView textView, int score) {
+        textView.text = ( score + 1).toString()
+    }
+
+    void displayGameOver(String playerName) {
+        Intent intent = new Intent(this,GameOverActivity)
+        intent.putExtra('PLAYER_NAME',playerName)
+        startActivity(intent)
     }
 
     private void onLoggedInError(Throwable throwable) {

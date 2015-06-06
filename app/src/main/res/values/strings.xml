@@ -7,4 +7,6 @@
     <string name="left_user_email">ordon1313@gmail.com</string>
     <string name="right_user_name">Kasper</string>
     <string name="right_user_email">kasper.kondzielski@gmail.com</string>
+    <string name="wins">Wins!</string>
+
 </resources>
