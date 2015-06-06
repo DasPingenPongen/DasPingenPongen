@@ -19,7 +19,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Karol"
+                android:text="@string/left_user_name"
                 android:textSize="40sp" />
 
             <TextView
@@ -32,7 +32,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ordon1313@gmail.com" />
+                android:text="@string/left_user_email" />
         </LinearLayout>
     </FrameLayout>
 
@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kasper"
+                android:text="@string/right_user_name"
                 android:textSize="40sp" />
 
             <TextView
@@ -65,7 +65,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="kasper.kondzielski@gmail.com" />
+                android:text="@string/right_user_email" />
         </LinearLayout>
     </FrameLayout>
 
