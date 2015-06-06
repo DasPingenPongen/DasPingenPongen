@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import groovy.transform.CompileStatic
 import io.relayr.RelayrSdk
+import io.relayr.model.Reading
 import io.relayr.model.Transmitter
+import io.relayr.model.TransmitterDevice
 import io.relayr.model.User
 import rx.Observable
 import rx.Subscription
@@ -15,6 +17,7 @@ import rx.android.schedulers.AndroidSchedulers
 public class MainActivity extends AppCompatActivity {
 
     Subscription subscription
+    TransmitterSubscriber leftTransmitterSubscriber
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause()
         subscription?.unsubscribe()
-        RelayrSdk.logOut()
+        leftTransmitterSubscriber?.unSubscribe()
+//        RelayrSdk.logOut()
     }
 
     private void subscribeOnLogin(Observable<User> logInObservable) {
@@ -48,7 +52,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onTransmitters(List<Transmitter> transmitters) {
-        Log.e('Login error', transmitters.toString())
+        Log.e('on transmitters', transmitters.toString())
+        transmitters.each {
+            Log.e('Transmitter id:',it.id)
+            leftTransmitterSubscriber = new TransmitterSubscriber(it)
+            leftTransmitterSubscriber.subscribe()
+        }
     }
 
     private void onLoggedInError(Throwable throwable) {
