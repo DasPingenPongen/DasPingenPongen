@@ -3,11 +3,10 @@ package com.daspingenpongen
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.widget.TextView
 import groovy.transform.CompileStatic
 import io.relayr.RelayrSdk
-import io.relayr.model.Reading
 import io.relayr.model.Transmitter
-import io.relayr.model.TransmitterDevice
 import io.relayr.model.User
 import rx.Observable
 import rx.Subscription
@@ -54,10 +53,15 @@ public class MainActivity extends AppCompatActivity {
     private void onTransmitters(List<Transmitter> transmitters) {
         Log.e('on transmitters', transmitters.toString())
         transmitters.each {
-            Log.e('Transmitter id:',it.id)
+            Log.e('Transmitter id:', it.id)
             leftTransmitterSubscriber = new TransmitterSubscriber(it)
-            leftTransmitterSubscriber.subscribe()
+            leftTransmitterSubscriber.subscribe(this.&onLeftAddPoint)
         }
+    }
+
+    private void onLeftAddPoint() {
+        TextView leftScore = (TextView) findViewById(R.id.left_score)
+        leftScore.text = (Integer.parseInt(leftScore.text.toString()) + 1).toString()
     }
 
     private void onLoggedInError(Throwable throwable) {

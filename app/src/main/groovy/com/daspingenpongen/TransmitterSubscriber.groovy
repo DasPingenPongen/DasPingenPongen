@@ -12,12 +12,14 @@ final class TransmitterSubscriber {
 
     private Transmitter transmitter
     private List<Subscription> subscriptions
+    private OnAddPointListener onAddPointListener
 
     TransmitterSubscriber(Transmitter transmitter) {
         this.transmitter = transmitter
     }
 
-    void subscribe() {
+    void subscribe(OnAddPointListener onAddPointListener) {
+        this.onAddPointListener = onAddPointListener
         transmitter.devices.subscribe(this.&onDevices)
     }
 
@@ -53,6 +55,7 @@ final class TransmitterSubscriber {
     }
 
     void onTouch(List<Boolean> aBoolean) {
+        onAddPointListener?.onAddPoint()
         Log.e('Point', 'this event should add one point!')
     }
 }
