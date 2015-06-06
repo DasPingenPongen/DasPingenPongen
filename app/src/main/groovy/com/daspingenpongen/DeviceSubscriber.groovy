@@ -36,8 +36,8 @@ final class DeviceSubscriber {
         return Double.parseDouble(reading.value.toString()) > 1000d
     }
 
-    void onTouch(Boolean aBoolean) {
-        if(aBoolean){
+    void onTouch(Boolean status) {
+        if (status) {
             Log.e('Point', 'this event should add one point!')
             onAddPointListener?.onAddPoint()
         }
