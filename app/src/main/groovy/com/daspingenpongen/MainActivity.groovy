@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onLoggedIn(User user) {
-        new DeviceSubscriber(new TransmitterDevice('dd66be35-d8fe-441f-be2a-5017cf30f5d8', 'cI_xGtONFU0.sWClApAFfQdxPLWatH02', '', '', '')).subscribe(this.&onLeftAddPoint)
-        new DeviceSubscriber(new TransmitterDevice('31f3e93f-642b-43d9-9432-1f67c3b310de', 'cI_xGtONFU0.sWClApAFfQdxPLWatH02', '', '', '')).subscribe(this.&onRightAddPoint)
+        new DeviceSubscriber(new TransmitterDeviceAdapterImpl(new TransmitterDevice('dd66be35-d8fe-441f-be2a-5017cf30f5d8', 'cI_xGtONFU0.sWClApAFfQdxPLWatH02', '', '', ''))).subscribe(this.&onLeftAddPoint)
+        new DeviceSubscriber(new TransmitterDeviceAdapterImpl(new TransmitterDevice('31f3e93f-642b-43d9-9432-1f67c3b310de', 'cI_xGtONFU0.sWClApAFfQdxPLWatH02', '', '', ''))).subscribe(this.&onRightAddPoint)
     }
 
     private void onLeftAddPoint() {

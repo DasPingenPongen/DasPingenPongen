@@ -28,7 +28,7 @@ final class TransmitterSubscriber {
     }
 
     DeviceSubscriber subscribeToCloudReadings(TransmitterDevice transmitterDevice) {
-        DeviceSubscriber deviceSubscriber = new DeviceSubscriber(transmitterDevice)
+        DeviceSubscriber deviceSubscriber = new DeviceSubscriber(new TransmitterDeviceAdapterImpl(transmitterDevice))
         deviceSubscriber.subscribe(onAddPointListener)
         return deviceSubscriber
     }

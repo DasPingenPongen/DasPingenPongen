@@ -3,17 +3,16 @@ package com.daspingenpongen
 import android.util.Log
 import groovy.transform.CompileStatic
 import io.relayr.model.Reading
-import io.relayr.model.TransmitterDevice
 import rx.Subscription
 
 @CompileStatic
 final class DeviceSubscriber {
 
-    private TransmitterDevice transmitterDevice
+    private TransmitterDeviceAdapter transmitterDevice
     private Subscription subscription
     private OnAddPointListener onAddPointListener
 
-    DeviceSubscriber(TransmitterDevice transmitterDevice) {
+    DeviceSubscriber(TransmitterDeviceAdapter transmitterDevice) {
         this.transmitterDevice = transmitterDevice
     }
 
@@ -27,19 +26,18 @@ final class DeviceSubscriber {
     }
 
 
-    boolean filterProximityOnly(Reading reading) {
+    private boolean filterProximityOnly(Reading reading) {
         return reading.meaning == 'proximity'
     }
 
-    Boolean mapToStatus(Reading reading) {
-        Log.e('Raw value', transmitterDevice.id + '\t' + reading.value.toString())
+    private Boolean mapToStatus(Reading reading) {
         return Double.parseDouble(reading.value.toString()) > 1000d
     }
 
-    void onTouch(Boolean status) {
+    private void onTouch(Boolean status) {
         if (status) {
-            Log.e('Point', 'this event should add one point!')
             onAddPointListener?.onAddPoint()
+            Log.e('Point', 'this event should add one point!')
         }
     }
 
